@@ -1,0 +1,27 @@
+{
+  "allow_create_new_accounts" : {{ALLOW_CREATE_NEW_ACCOUNTS}},
+  "send_emails"              : {{SEND_EMAILS}},
+  "application_sender_email" : "{{EMAIL_FROM}}",
+  "email_transporter" : {
+    "host" : "{{EMAIL_HOST}}",
+    "port" : {{EMAIL_PORT}},
+    "secure" : {{EMAIL_SSL}},
+    "ignoreTLS" : {{EMAIL_TLS}},
+    "auth" : {
+      "user" : "{{EMAIL_USER}}",
+      "pass" : "{{EMAIL_PASS}}"
+    }
+  },
+  "sessionStore": {
+    "useRedis": {{USE_REDIS}},
+    "redisConnectionConfiguration": {
+      "host": "{{REDIS_HOST}}",
+      "port": {{REDIS_PORT}}
+    }
+  },
+  "ga_analytics_on" : {{GA_ANALYTICS_ON}},
+  "crypto_secret" : "{{CRYPTO_SECRET}}",
+  "application_domain" : "{{APPLICATION_DOMAIN}}",
+  "promotion_website_domain" : "{{PROMOTION_WEBSITE_DOMAIN}}",
+  "locale_code_for_sorting": "{{LOCALE_CODE_FOR_SORTING}}"
+}

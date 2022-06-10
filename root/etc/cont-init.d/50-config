@@ -1,0 +1,64 @@
+#!/usr/bin/with-contenv bash
+
+if [ -d /app/timeoff-management-tmp ]; then
+    echo "New container detected. Setting up app folder and fixing permissions."
+    mv /app/timeoff-management-tmp /app/timeoff-management
+
+    chown -R abc:abc /app
+fi
+
+if [ ! -f "/data/db.development.sqlite" ]; then
+    echo "Copying default database"
+    mkdir -p /data
+    cp /defaults/db.development.sqlite /data
+    chown -R abc:abc /data   
+
+fi
+
+ln -sf /data/db.development.sqlite /app/timeoff-management/db.development.sqlite
+
+ALLOW_CREATE_NEW_ACCOUNTS=${ALLOW_CREATE_NEW_ACCOUNTS:-true}
+SEND_EMAILS=${SEND_EMAILS:-false}
+EMAIL_FROM=${EMAIL_FROM:-email@test.com}
+EMAIL_HOST=${EMAIL_HOST:-localhost}
+EMAIL_PORT=${EMAIL_PORT:-25}
+EMAIL_SSL=${EMAIL_SSL:-false}
+EMAIL_TLS=${EMAIL_TLS:-true}
+EMAIL_USER=${EMAIL_USER:-user}
+EMAIL_PASS=${EMAIL_PASS:-pass}
+
+USE_REDIS=${USE_REDIS:-false}
+REDIS_HOST=${REDIS_HOST:-localhost}
+REDIS_PORT=${REDIS_PORT:-6379}
+
+GA_ANALYTICS_ON=${GA_ANALYTICS_ON:-false}
+CRYPTO_SECRET=${CRYPTO_SECRET:-"!2~lHswpPPLa22+=±§sdq qwe,appp qwwokDF_"}
+APPLICATION_DOMAIN=${APPLICATION_DOMAIN:-http://app.timeoff.management}
+PROMOTION_WEBSITE_DOMAIN=${PROMOTION_WEBSITE_DOMAIN:-http://timeoff.management}
+LOCALE_CODE_FOR_SORTING=${LOCALE_CODE_FOR_SORTING:-en}
+
+cp /defaults/app.json /app/timeoff-management/config/app.json
+
+sed -i "s|{{ALLOW_CREATE_NEW_ACCOUNTS}}|"${ALLOW_CREATE_NEW_ACCOUNTS}"|g" /app/timeoff-management/config/app.json
+sed -i "s|{{SEND_EMAILS}}|${SEND_EMAILS}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{EMAIL_FROM}}|${EMAIL_FROM}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{EMAIL_HOST}}|${EMAIL_HOST}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{EMAIL_PORT}}|${EMAIL_PORT}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{EMAIL_SSL}}|${EMAIL_SSL}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{EMAIL_TLS}}|${EMAIL_TLS}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{EMAIL_USER}}|${EMAIL_USER}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{EMAIL_PASS}}|${EMAIL_PASS}|g" /app/timeoff-management/config/app.json
+
+sed -i "s|{{USE_REDIS}}|${USE_REDIS}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{REDIS_HOST}}|${REDIS_HOST}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{REDIS_PORT}}|${REDIS_PORT}|g" /app/timeoff-management/config/app.json
+
+sed -i "s|{{GA_ANALYTICS_ON}}|${GA_ANALYTICS_ON}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{CRYPTO_SECRET}}|${CRYPTO_SECRET}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{APPLICATION_DOMAIN}}|${APPLICATION_DOMAIN}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{PROMOTION_WEBSITE_DOMAIN}}|${PROMOTION_WEBSITE_DOMAIN}|g" /app/timeoff-management/config/app.json
+sed -i "s|{{LOCALE_CODE_FOR_SORTING}}|${LOCALE_CODE_FOR_SORTING}|g" /app/timeoff-management/config/app.json
+
+cd /app/timeoff-management
+cat config/app.json
+npm start
