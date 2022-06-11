@@ -34,7 +34,7 @@ jobs:
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           VERSION=$version
           [[ "@{{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          [ "$VERSION| == "main" ] && VERSION=latest
+          [ "$VERSION" == "main" ] && VERSION=latest
           echo IMAGE_ID=$$IMAGE_ID
           echo VERSION=$VERSION
           docker tage $IMAGE_NAME $IMAGE_ID:$VERSION
